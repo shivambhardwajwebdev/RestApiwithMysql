@@ -1,0 +1,260 @@
+# 📄 instructions.txt
+
+## 🚀 Fullstack Teacher Management System - Setup Guide
+
+This guide explains how to run the project from scratch (Backend + Frontend).
+
+---
+
+# 🧩 1. Prerequisites
+
+Make sure you have installed:
+
+* Node.js (v18+ recommended)
+* MySQL (or remote DB like Hostinger)
+* Git (optional)
+
+---
+
+# 📁 2. Project Structure
+
+```
+project/
+│── backend/
+│── frontend/
+```
+
+---
+
+# ⚙️ 3. Backend Setup (Node.js + Express)
+
+## 📌 Step 1: Navigate to backend
+
+```
+cd backend
+```
+
+---
+
+## 📌 Step 2: Install dependencies
+
+```
+npm install
+```
+
+---
+
+## 📌 Step 3: Create `.env` file
+
+Create a file named `.env` in backend root:
+
+```
+DB_HOST=your_host
+DB_USER=your_username
+PASSWORD=your_password
+DB_NAME=your_database
+JWT_SECRET=secretkey
+```
+
+---
+
+## 📌 Step 4: Setup Database
+
+Run this SQL in MySQL:
+
+```
+CREATE TABLE auth_user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE teachers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    university_name VARCHAR(150) NOT NULL,
+    gender ENUM('male','female','other') NOT NULL,
+    year_joined YEAR NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES auth_user(id)
+        ON DELETE CASCADE
+);
+```
+
+---
+
+## 📌 Step 5: Insert Dummy User (for login)
+
+Run:
+
+```
+INSERT INTO auth_user (email, first_name, last_name, password)
+VALUES (
+  'admin@gmail.com',
+  'Admin',
+  'User',
+  '$2b$10$KbQiQv5lH7z9kFQyKz6k8O2KkYQ8x9V1Wq6xv5Zz8wXqTqv9mH7yG'
+);
+```
+
+👉 Password = `123456`
+
+---
+
+## 📌 Step 6: Start Backend Server
+
+```
+npx nodemon server.js
+```
+
+You should see:
+
+```
+server is running on port 3000
+MySQL connected
+```
+
+---
+
+# 🎨 4. Frontend Setup (React + Vite)
+
+## 📌 Step 1: Navigate to frontend
+
+```
+cd frontend
+```
+
+---
+
+## 📌 Step 2: Install dependencies
+
+```
+npm install
+```
+
+---
+
+## 📌 Step 3: Start frontend
+
+```
+npm run dev
+```
+
+Frontend runs at:
+
+```
+http://localhost:5173
+```
+
+---
+
+# 🔐 5. How to Use the App
+
+---
+
+## 🔹 Step 1: Login
+
+Go to:
+
+```
+http://localhost:5173
+```
+
+Use:
+
+```
+Email: admin@gmail.com
+Password: 123456
+```
+
+---
+
+## 🔹 Step 2: Create Teacher
+
+* Fill form
+* Click "Create Teacher"
+* Data will be stored in both tables
+
+---
+
+## 🔹 Step 3: View Teachers
+
+Go to:
+
+```
+http://localhost:5173/teachers
+```
+
+---
+
+## 🔹 Step 4: View Individual Teacher
+
+Click on any teacher (if implemented)
+
+---
+
+# 📡 API Summary
+
+| Method | Endpoint             | Description        |
+| ------ | -------------------- | ------------------ |
+| POST   | /api/auth/login      | Login              |
+| POST   | /api/teachers/create | Create teacher     |
+| GET    | /api/teachers        | Get all teachers   |
+| GET    | /api/teachers/:id    | Get single teacher |
+
+---
+
+# ⚠️ Important Notes
+
+* Backend must run before frontend
+* JWT token is required for protected APIs
+* CORS must be enabled in backend
+* `.env` file should not be shared publicly
+
+---
+
+# 🧠 Troubleshooting
+
+### ❌ "No token"
+
+→ Login first
+
+### ❌ "ECONNREFUSED"
+
+→ Backend not running
+
+### ❌ "CORS error"
+
+→ Enable cors middleware
+
+### ❌ Empty data
+
+→ No records in database
+
+---
+
+# ✅ Final Status
+
+After following steps:
+
+* Backend running ✅
+* Frontend running ✅
+* Login working ✅
+* Create teacher working ✅
+* View data working ✅
+
+---
+
+# 🎉 You're Ready!
+
+This project demonstrates:
+
+* Fullstack development
+* JWT authentication
+* API integration
+* Database relationships
+
+---
+
+👉 Ready for submission 🚀
