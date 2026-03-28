@@ -2,23 +2,6 @@ const db = require("../models/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.register = async (req, res) => {
-  const { email, first_name, last_name, password } = req.body;
-
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const sql = `INSERT INTO auth_user (email, first_name, last_name, password) VALUES (?, ?, ?, ?)`;
-
-    db.query(sql, [email, first_name, last_name, hashedPassword], (err, result) => {
-      if (err) return res.status(500).json(err);
-
-      res.json({ message: "User registered successfully" });
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
 
 exports.login = (req, res) => {
   const { email, password } = req.body;
